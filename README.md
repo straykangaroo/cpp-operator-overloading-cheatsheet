@@ -37,18 +37,18 @@ Though sometimes belittled as mere <i>syntactic sugar</i> adding nothing to the 
 Short example of operating on hypothetical objects representing 2D euclidean vectors, <em>without</em> operator overloading
 </p>
 <pre><code>
-    class Vector2D {
-        /* ... */
-    };
-    
-    Vector2D v1 = /* ...*/;
-    Vector2D v2 = /* ...*/;
-    
-    Vector2D v3 = v1.add(v2).multiply(0.5);
+class Vector2D {
+    /* ... */
+};
 
-    if( ! v1.equal(v3) ) {
-        v1 = v2.opposite();
-    }
+Vector2D v1 = /* ... */;
+Vector2D v2 = /* ... */;
+
+Vector2D v3 = v1.add(v2).multiply(0.5);
+
+if( ! v1.equal(v3) ) {
+    v1 = v2.opposite();
+}
 </code></pre>
 <p>... and <em>with</em> operator overloading</p>
 <pre><code>
@@ -56,8 +56,8 @@ class Vector2D {
     /* ... */
 };
 
-Vector2D v1 = /* ...*/;
-Vector2D v2 = /* ...*/;
+Vector2D v1 = /* ... */;
+Vector2D v2 = /* ... */;
 
 Vector2D v3 = (v1 + v2) * 0.5;
 
