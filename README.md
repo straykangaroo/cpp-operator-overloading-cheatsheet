@@ -38,11 +38,11 @@ Short example of operating on hypothetical objects representing 2D euclidean vec
 </p>
 <pre><code>
 class Vector2D {
-    /* ... */
+    // ...
 };
 
-Vector2D v1 = /* ... */;
-Vector2D v2 = /* ... */;
+Vector2D v1 = // ...
+Vector2D v2 = // ...;
 
 Vector2D v3 = v1.add(v2).multiply(0.5);
 
