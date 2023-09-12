@@ -34,6 +34,47 @@ This document aims at bringing together in a sensible format all the knowledge n
     </ol>
 </nav>
 
+<h2>Brief recap: what is operator overloading?</h2>
+<p>
+Operator overloading is a kind of polymorphism, available in several programming languages, that allows the developer to define or redefine the behavior of the language operators (e.g. <code>+</code>, <code>*</code>, <code>&lt;&lt;</code>, etc.) for classes and (though discouraged) for primitive data types (e.g. <code>int</code>, <code>double</code>, etc.).
+</p>
+<p>
+Though sometimes belittled as mere <i>syntactic sugar</i> adding nothing to the language expressive power, it is indeed, when properly deployed, an extremely tasteful and energizing sugar, great for closing the gap between the source code and the domain model it is supposed to manipulate.
+</p>
+<p>
+Short example of operating on hypothetical objects representing 2D euclidean vectors, <em>without</em> operator overloading
+</p>
+<pre><code>
+    class Vector2D {
+        /* ... */
+    };
+    
+    Vector2D v1 = /* ...*/;
+    Vector2D v2 = /* ...*/;
+    
+    Vector2D v3 = v1.add(v2).multiply(0.5);
+
+    if( ! v1.equal(v3) ) {
+        v1 = v2.opposite();
+    }
+</code></pre>
+<p>... and <em>with</em> operator overloading</p>
+<pre><code>
+class Vector2D {
+    /* ... */
+};
+
+Vector2D v1 = /* ...*/;
+Vector2D v2 = /* ...*/;
+
+Vector2D v3 = (v1 + v2) * 0.5;
+
+if( v1 != v3 ) {
+    v1 = -v2;
+}
+</code></pre>
+
+
 <h2>Conventions used in this guide</h2>
 <dl>
     <dt><code>C</code>, <code>X</code>, <code>Y</code></dt><dd>some types</dd>
