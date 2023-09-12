@@ -2,7 +2,13 @@
 
 <h1>C++ Operator Overloading Cheatsheet</h1>
 <p>
-    <mark>TODO: intro</mark>
+The most challenging step in using <i>C++ operator overloading</i> (and in using C++ in general, actually) is probably moving from theory to practice. The theory in textbooks might be clear but its practical application is often arduous.
+</p>
+<p>
+C++ software developement in practice requires applying a fair deal of conventions, best practices, and professional knowledge whose content is abundant but often scantly digestible, as it is scattered in multiple textbooks, blogs, wikis, Q&amp;A sites.
+</p>
+<p>
+This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many <i>"How could I possibly know?"</i> traps.
 </p>
 
 <nav>
