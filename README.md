@@ -7,15 +7,15 @@ C++ software developement in practice requires applying a fair deal of conventio
 This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many _"How could I possibly know?"_ traps.
 
 ## Table of contents
-1.	[Object access operators](#access)
-2.	[Arithmetic operators](#arithmetic)
-3.	[Bitwise operators](#bitwise)
-4.	[Boolean (logical) operators](#boolean)
-5.	[Comparison (relational) operators](#comparison)
-6.	[Increment / Decrement operators](#inc_dec)
-7.	[I/O streams operators](#i_o)
-8.	[Memory management operators](#memory)
-9.	[Other operators](#other)
+1.	[Object access operators](#object-access-operators)
+2.	[Arithmetic operators](#arithmetic-operators)
+3.	[Bitwise operators](#bitwise-operators)
+4.	[Boolean (logical) operators](#boolean-logical-operators)
+5.	[Comparison (relational) operators](#comparison-relational-operators)
+6.	[Increment / Decrement operators](#increment--decrement-operators)
+7.	[I/O streams operators](#io-streams-operators)
+8.	[Memory management operators](#memory-management-operators)
+9.	[Other operators](#other-operators)
 
 ## Brief recap: what is operator overloading?
 Operator overloading is a kind of polymorphism, available in several programming languages, that allows the developer to define or redefine the behavior of the language operators (e.g. `+`, `*`, `<<`, etc.) for classes and (though discouraged) for primitive data types (e.g. `int`, `double`, etc.).
