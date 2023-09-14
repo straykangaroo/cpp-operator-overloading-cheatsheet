@@ -46,7 +46,7 @@ if( ! v1.equal(v3) ) {
 ```
 
 <p>... and <em>with</em> operator overloading</p>
-<pre><code>
+<pre><code class="language-cpp">
 class Vector2D {
     // ...
 };
