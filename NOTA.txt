@@ -1,4 +1,0 @@
-la cosa è che github non considera tutto quanto dentro a <head></head> e
-sbarella.
-Quindi basta fare un README.md che in realtà contiente dell'HTML ma solo
-<body></body>
