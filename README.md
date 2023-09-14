@@ -6,29 +6,23 @@ C++ software developement in practice requires applying a fair deal of conventio
 
 This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many _"How could I possibly know?"_ traps.
 
-<h2>Table of contents</h2>
-<ol>
-    <li><a href="#access">Object access operators</a></li>
-    <li><a href="#arithmetic">Arithmetic operators</a></li>
-    <li><a href="#bitwise">Bitwise operators</a></li>
-    <li><a href="#boolean">Boolean (logical) operators</a></li>
-    <li><a href="#comparison">Comparison (relational) operators</a></li>
-    <li><a href="#inc_dec">Increment / Decrement operators</a></li>
-    <li><a href="#i_o">I/O streams operators</a></li>
-    <li><a href="#memory">Memory management operators</a></li>
-    <li><a href="#other">Other operators</a></li>
-</ol>
+## Table of contents
+1.	[Object access operators](#access)
+2.	[Arithmetic operators](#arithmetic)
+3.	[Bitwise operators](#bitwise)
+4.	[Boolean (logical) operators](#boolean)
+5.	[Comparison (relational) operators](#comparison)
+6.	[Increment / Decrement operators](#inc_dec)
+7.	[I/O streams operators](#i_o)
+8.	[Memory management operators](#memory)
+9.	[Other operators](#other)
 
-<h2>Brief recap: what is operator overloading?</h2>
-<p>
-Operator overloading is a kind of polymorphism, available in several programming languages, that allows the developer to define or redefine the behavior of the language operators (e.g. <code>+</code>, <code>*</code>, <code>&lt;&lt;</code>, etc.) for classes and (though discouraged) for primitive data types (e.g. <code>int</code>, <code>double</code>, etc.).
-</p>
-<p>
-Though sometimes belittled as mere <i>syntactic sugar</i> adding nothing to the language expressive power, it is indeed, when properly deployed, an extremely tasteful and energizing sugar, great for closing the gap between the source code and the domain model it is supposed to manipulate.
-</p>
-<p>
-Short example of operating on hypothetical objects representing 2D euclidean vectors, <em>without</em> operator overloading
-</p>
+## Brief recap: what is operator overloading?
+Operator overloading is a kind of polymorphism, available in several programming languages, that allows the developer to define or redefine the behavior of the language operators (e.g. `+`, `*`, `<<`, etc.) for classes and (though discouraged) for primitive data types (e.g. `int`, `double`, etc.).
+
+Though sometimes belittled as mere _syntactic sugar_ adding nothing to the language expressive power, it is indeed, when properly deployed, an extremely tasteful and energizing sugar, great for closing the gap between the source code and the domain model it is supposed to manipulate.
+
+Short example of operating on hypothetical objects representing 2D euclidean vectors, *without* operator overloading
 
 ```cpp
 class Vector2D {
@@ -45,8 +39,9 @@ if( ! v1.equal(v3) ) {
 }
 ```
 
-<p>... and <em>with</em> operator overloading</p>
-<pre><code class="language-cpp">
+... and *with* operator overloading
+
+```cpp
 class Vector2D {
     // ...
 };
@@ -59,18 +54,19 @@ Vector2D v3 = (v1 + v2) * 0.5;
 if( v1 != v3 ) {
     v1 = -v2;
 }
-</code></pre>
+```
 
-
-<h2>Conventions used in this guide</h2>
+## Conventions used in this guide
 <dl>
-    <dt><code>C</code>, <code>X</code>, <code>Y</code></dt><dd>some types</dd>
-    <dt><code>T</code></dt><dd>some type, maybe contained in a container-like <code>C</code> class</dd>
+    <dt><code>C</code>, <code>X</code>, <code>Y</code></dt>
+        <dd>some types</dd>
+    <dt><code>T</code></dt>
+        <dd>some type, maybe contained in a container-like <code>C</code> class</dd>
 </dl>
 
-<h2>Operators</h2>
+## Operators
 
-<h3 id="access">Object access operators</h3>
+### Object access operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -78,10 +74,10 @@ if( v1 != v3 ) {
             <td>array subscript (non-const)</td><td><code>T &amp; C::operator[](std::size_t idx)</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li><code>std::size_t</code> or whatever makes sense (see: associative containers)</li>
-                <li>Multiple overloads possible</li>
-                <li>If <code>T</code> is a built-in type, return by value</li>
-                <li>Since C++23 may have multiple params</li>
+                <code>std::size_t</code> or whatever makes sense (see: associative containers)</li>
+                Multiple overloads possible</li>
+                If <code>T</code> is a built-in type, return by value</li>
+                Since C++23 may have multiple params</li>
                 </ul>
             </td>
         </tr>
@@ -89,10 +85,10 @@ if( v1 != v3 ) {
             <td>array subscript (const)</td><td><code>const T &amp; C::operator[](std::size_t idx) const</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li><code>std::size_t</code> or whatever makes sense (see: associative containers)</li>
-                <li>Multiple overloads possible</li>
-                <li>If <code>T</code> is a built-in type, return by value</li>
-                <li>Since C++23 may have multiple params</li>
+                <code>std::size_t</code> or whatever makes sense (see: associative containers)</li>
+                Multiple overloads possible</li>
+                If <code>T</code> is a built-in type, return by value</li>
+                Since C++23 may have multiple params</li>
                 </ul>
             </td>
         </tr>
@@ -100,8 +96,8 @@ if( v1 != v3 ) {
             <td>array subscript (for pointer like objects e.g. random access iterators)</td><td><code>C C::operator[](std::size_t idx) const</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li>Equivalent to <code>*this + idx</code> (may implement as such)</li>
-                <li><code>C</code> should be cheap to copy</li>
+                Equivalent to <code>*this + idx</code> (may implement as such)</li>
+                <code>C</code> should be cheap to copy</li>
                 </ul>
             </td>
         </tr>
@@ -109,7 +105,7 @@ if( v1 != v3 ) {
             <td>dereference (non-const)</td><td><code>T &amp; operator*()</code></td><td><mark>Must be member</mark></td>
             <td>
                 <ul>
-                <li>If <code>T</code> is a built-in type, return by value</li>
+                If <code>T</code> is a built-in type, return by value</li>
                 </ul>
             </td>
         </tr>
@@ -117,7 +113,7 @@ if( v1 != v3 ) {
             <td>dereference</td><td><code>const T &amp; operator*() const</code></td><td><mark>Must be member</mark></td>
             <td>
                 <ul>
-                <li>If <code>T</code> is a built-in type, return by value</li>
+                If <code>T</code> is a built-in type, return by value</li>
                 </ul>
             </td>
         </tr>
@@ -125,7 +121,7 @@ if( v1 != v3 ) {
             <td>arrow (non-const)</td><td><code>T * operator-&gt;()</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li>Must return a pointer or a proxy object (overloading <code>operator-&gt;()</code> itself). Note that chaining occurs.</li>
+                Must return a pointer or a proxy object (overloading <code>operator-&gt;()</code> itself). Note that chaining occurs.</li>
                 </ul>
             </td>
         </tr>
@@ -133,7 +129,7 @@ if( v1 != v3 ) {
             <td>arrow (const)</td><td><code>const T * operator-&gt;() const</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li>Must return a pointer or a proxy object (overloading <code>operator-&gt;()</code> itself). Note that chaining occurs.</li>
+                Must return a pointer or a proxy object (overloading <code>operator-&gt;()</code> itself). Note that chaining occurs.</li>
                 </ul>
             </td>
         </tr>
@@ -147,17 +143,17 @@ if( v1 != v3 ) {
     </tbody>
 </table>
 
-<h3 id="arithmetic">Arithmetic operators</h3>
-    <table>
+### Arithmetic operators
+<table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
         <tr>
             <td>addition (compound)</td><td><code>C &amp; C::operator+=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -165,9 +161,9 @@ if( v1 != v3 ) {
             <td>subtraction (compound)</td><td><code>C &amp; C::operator-=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -175,9 +171,9 @@ if( v1 != v3 ) {
             <td>multiplication (compound)</td><td><code>C &amp; C::operator*=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -185,9 +181,9 @@ if( v1 != v3 ) {
             <td>division (compound)</td><td><code>C &amp; C::operator/=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -195,9 +191,9 @@ if( v1 != v3 ) {
             <td>modulus (compound)</td><td><code>C &amp; C::operator%=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>        
@@ -205,10 +201,10 @@ if( v1 != v3 ) {
             <td>addition</td><td><code>C operator+(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator+=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator+=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -216,10 +212,10 @@ if( v1 != v3 ) {
             <td>subtraction</td><td><code>C operator-(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator-=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator-=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -227,10 +223,10 @@ if( v1 != v3 ) {
             <td>multiplication</td><td><code>C operator*(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator*=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator*=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -238,10 +234,10 @@ if( v1 != v3 ) {
             <td>division</td><td><code>C operator/(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator/=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator/=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -249,10 +245,10 @@ if( v1 != v3 ) {
             <td>modulus</td><td><code>C operator%(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator%=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li></ul>
+                Implement in terms of <code>operator%=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li></ul>
             </td>
         </tr>
         <tr>
@@ -271,8 +267,9 @@ if( v1 != v3 ) {
         </tr>        
     </tbody>
 </table>
-<h4>Examples</h4>
-<pre><code>
+
+#### Examples
+```cpp
 // addition
 C operator+(C left, const C &amp; right)
 {
@@ -287,23 +284,23 @@ C operator*(C left, float right)
     return left;
 }
 
-C operator*(float left, const C &amp; right)
+C operator*(float left, const C & right)
 {
     return right * left;
 }
-</code></pre>
+```
 
-<h3 id="bitwise">Bitwise operators</h3>
-    <table>
+### Bitwise operators
+<table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
         <tr>
             <td>bitwise and (compound)</td><td><code>C &amp; C::operator&amp;=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -311,9 +308,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise or (compound)</td><td><code>C &amp; C::operator|=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -321,9 +318,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise xor (compound)</td><td><code>C &amp; C::operator^=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param may be the same type or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param may be the same type or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -331,9 +328,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise left shift (compound)</td><td><code>C &amp; C::operator&lt;&lt;=(std::size_t n)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>
@@ -341,9 +338,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise right shift (compound)</td><td><code>C &amp; C::operator&gt;&gt;=(const C &amp; other)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>
-                <li>Param usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
-                <li>Multiple overloads possible</li>
+                Return <code>*this</code></li>
+                Param usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
+                Multiple overloads possible</li>
                 </ul>
             </td>
         </tr>        
@@ -351,10 +348,10 @@ C operator*(float left, const C &amp; right)
             <td>bitwise and</td><td><code>C operator&amp;(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator&amp;=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator&amp;=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -362,10 +359,10 @@ C operator*(float left, const C &amp; right)
             <td>bitwise or</td><td><code>C operator|(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator|=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator|=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -373,10 +370,10 @@ C operator*(float left, const C &amp; right)
             <td>bitwise xor</td><td><code>C operator^(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator^=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li><code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
-                </li><li>May return something other than <code>C</code></li>
+                Implement in terms of <code>operator^=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                <code>left</code> and <code>right</code> may be of heterogeneous types (beware symmetry issues)
+                </li>May return something other than <code>C</code></li>
                 </ul>
             </td>
         </tr>
@@ -384,9 +381,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise left shift</td><td><code>C operator&lt;&lt;(C left, std::size_t n)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator&lt;&lt;=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li>Param <code>n</code> usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
+                Implement in terms of <code>operator&lt;&lt;=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                Param <code>n</code> usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
                 </ul>
             </td>
         </tr>
@@ -394,9 +391,9 @@ C operator*(float left, const C &amp; right)
             <td>bitwise right shift</td><td><code>C operator&gt;&gt;(C left, const C &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>Implement in terms of <code>operator&gt;&gt;=</code></li>
-                <li>Note that <code>left</code> is passed by value</li>
-                <li>Param <code>n</code> usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
+                Implement in terms of <code>operator&gt;&gt;=</code></li>
+                Note that <code>left</code> is passed by value</li>
+                Param <code>n</code> usually <code>std::size_t</code> or whatever makes sense, but beware conversions</li>
                 </ul>
             </td>
         </tr>
@@ -409,17 +406,18 @@ C operator*(float left, const C &amp; right)
         </tr>
     </tbody>
 </table>
-<h4>Examples</h4>
-<pre><code>
+
+#### Examples
+```cpp
 // logical and
-C operator&amp;(C left, const C &amp; right)
+C operator&(C left, const C & right)
 {
-    left &amp;= right;
+    left &= right;
     return left;
 }
-</code></pre>
+```
 
-<h3 id="boolean">Boolean (logical) operators</h3>
+### Boolean (logical) operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -427,9 +425,9 @@ C operator&amp;(C left, const C &amp; right)
             <td>logical and</td><td><code>bool operator&amp;&amp;(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>If overloaded will not have short circuit semantics</li>
-                <li>May also return other type</li>
-                <li>Until C++17 no sequence point holds</li>
+                If overloaded will not have short circuit semantics</li>
+                May also return other type</li>
+                Until C++17 no sequence point holds</li>
                 </ul>
             </td>
         </tr>
@@ -437,9 +435,9 @@ C operator&amp;(C left, const C &amp; right)
             <td>logical or</td><td><code>bool operator||(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>If overloaded will not have short circuit semantics</li>
-                <li>May also return other type</li>
-                <li>Until C++17 no sequence point holds</li>
+                If overloaded will not have short circuit semantics</li>
+                May also return other type</li>
+                Until C++17 no sequence point holds</li>
                 </ul>
             </td>
         </tr>
@@ -447,14 +445,14 @@ C operator&amp;(C left, const C &amp; right)
             <td>logical not</td><td><code>bool C::operator!() const</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>May also return some other type</li>
+                May also return some other type</li>
                 </ul>
             </td>
         </tr>
     </tbody>
 </table>
 
-<h3 id="comparison">Comparison (relational) operators</h3>
+### Comparison (relational) operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -462,7 +460,7 @@ C operator&amp;(C left, const C &amp; right)
             <td>equality</td><td><code>bool operator==(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
                 </ul>
             </td>
         </tr>
@@ -470,8 +468,8 @@ C operator&amp;(C left, const C &amp; right)
             <td>inequality</td><td><code>bool operator!=(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
-                <li>Implement in terms of <code>operator==</code></li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                Implement in terms of <code>operator==</code></li>
                 </ul>
             </td>
         </tr>
@@ -479,7 +477,7 @@ C operator&amp;(C left, const C &amp; right)
             <td>less-than</td><td><code>bool operator&lt;(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
                 </ul>
             </td>
         </tr>
@@ -487,8 +485,8 @@ C operator&amp;(C left, const C &amp; right)
             <td>less-or-equal-than</td><td><code>bool operator&lt;=(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
-                <li>Implement in terms of <code>operator&gt;</code></li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                Implement in terms of <code>operator&gt;</code></li>
                 </ul>
             </td>
         </tr>
@@ -496,8 +494,8 @@ C operator&amp;(C left, const C &amp; right)
             <td>greater-than</td><td><code>bool operator&gt;(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
-                <li>Implement in terms of <code>operator&lt;</code></li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                Implement in terms of <code>operator&lt;</code></li>
                 </ul>
             </td>
         </tr>
@@ -505,41 +503,42 @@ C operator&amp;(C left, const C &amp; right)
             <td>greater-than-or-equal</td><td><code>bool operator&gt;=(const C &amp; left, const C &amp; right)</code></td><td>Should be non member</td>
             <td>
                 <ul>
-                <li>May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
-                <li>Implement in terms of <code>operator&lt;=</code></li>
+                May also compare to other types, if it makes sense, but beware conversion and symmetry issues</li>
+                Implement in terms of <code>operator&lt;=</code></li>
                 </ul>
             </td>
         </tr>
     </tbody>
 </table>
-<h4>Examples</h4>
-<pre><code>
+
+#### Examples
+```cpp
 // inequality
-bool operator!=(const C &amp; left, const C &amp; right)
+bool operator!=(const C & left, const C & right)
 {
     return ! (left == right);
 }
 
 // less-or-equal-than
-bool operator&lt;=(const C &amp; left, const C &amp; right)
+bool operator<=(const C & left, const C & right)
 {
-    return ! (left &gt; right);
+    return ! (left > right);
 }
 
 // greater-than
-bool operator&gt;(const C &amp; left, const C &amp; right)
+bool operator>(const C & left, const C & right)
 {
-    return right &amp;;lt left;
+    return right < left;
 }
 
 // greater-than-or-equal
-bool operator&gt;=(const C &amp; left, const C &amp; right)
+bool operator>=(const C & left, const C & right)
 {
-    return right &lt;= left;
+    return right <= left;
 }
-</code></pre>
+```
 
-<h3 id="inc_dec">Increment / Decrement operators</h3>
+### Increment / Decrement operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -547,7 +546,7 @@ bool operator&gt;=(const C &amp; left, const C &amp; right)
             <td>pre-increment</td><td><code>C &amp; C::operator++()</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>    
+                Return <code>*this</code></li>    
                 </ul>
             </td>
         </tr>
@@ -555,9 +554,9 @@ bool operator&gt;=(const C &amp; left, const C &amp; right)
             <td>post-increment</td><td><code>C C::operator++(int)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Dummy <code>int</code> param</li>
-                <li>Return "old" <code>*this</code></li>
-                <li>Implement in terms of operator++()</li>
+                Dummy <code>int</code> param</li>
+                Return "old" <code>*this</code></li>
+                Implement in terms of operator++()</li>
             </ul>
             </td>
         </tr>
@@ -565,7 +564,7 @@ bool operator&gt;=(const C &amp; left, const C &amp; right)
             <td>pre-decrement</td><td><code>C &amp; C::operator--()</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Return <code>*this</code></li>    
+                Return <code>*this</code></li>    
                 </ul>
             </td>
         </tr>
@@ -573,18 +572,19 @@ bool operator&gt;=(const C &amp; left, const C &amp; right)
             <td>post-decrement</td><td><code>C C::operator--(int)</code></td><td>Should be member</td>
             <td>
                 <ul>
-                <li>Dummy <code>int</code> param</li>
-                <li>Return "old" <code>*this</code></li>
-                <li>Implement in terms of operator--()</li>
+                Dummy <code>int</code> param</li>
+                Return "old" <code>*this</code></li>
+                Implement in terms of operator--()</li>
             </ul>
             </td>
         </tr>
     </tbody>
 </table>
-<h4>Examples</h4>
-<pre><code>
+
+#### Examples
+```cpp
 // pre-increment
-C &amp; C::operator++()
+C & C::operator++()
 {
     // DO INCREMENT HERE...
     return *this;
@@ -597,9 +597,9 @@ C C::operator++(int)
     ++*this;
     return old;
 }
-</code></pre>
+```
 
-<h3 id="i_o">I/O streams operators</h3>
+### I/O streams operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -607,8 +607,8 @@ C C::operator++(int)
             <td>stream extraction</td><td><code>std::ostream &amp; operator&lt;&lt;(std::ostream &amp; os, const C &amp; c)</code></td><td>Must not be member</td>
             <td>
                 <ul>
-                <li>Should return <code>os</code></li>
-                <li>Restore stream state if modified</li>
+                Should return <code>os</code></li>
+                Restore stream state if modified</li>
                 </ul>
             </td>
         </tr>
@@ -616,18 +616,18 @@ C C::operator++(int)
             <td>stream insertion</td><td><code>std::istream &amp; operator&gt;&gt;(std::istream &amp; is, C &amp; c)</code></td><td>Must not be member</td>
             <td>
                 <ul>
-                <li>Should return <code>is</code></li>
-                <li>Set stream state if errors</li>
+                Should return <code>is</code></li>
+                Set stream state if errors</li>
                 </ul>
             </td>
         </tr>
     </tbody>
 </table>
 
-<h3 id="memory">Memory management operators</h3>
+### Memory management operators
 <mark>TODO: intro</mark>
 
-<h3 id="other">Other operators</h3>
+### Other operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
     <tbody>
@@ -635,10 +635,10 @@ C C::operator++(int)
             <td>function call</td><td><code>Y C::operator()(X x) const</code></td><td>Must be member</td>
             <td>
                 <ul>
-                <li>May be <code>const</code>, or not</li>
-                <li>Return type and (multiple) params as needed</li>
-                <li>Multiple overloads possible</li>
-                <li>Function objects should be cheap to copy</li>
+                May be <code>const</code>, or not</li>
+                Return type and (multiple) params as needed</li>
+                Multiple overloads possible</li>
+                Function objects should be cheap to copy</li>
                 </ul>
             </td>
         </tr>
@@ -646,8 +646,8 @@ C C::operator++(int)
             <td>comma</td><td><code>Y operator,(const X &amp; left, const Y &amp; right)</code></td><td>Should be non-member</td>
             <td>
                 <ul>
-                <li>May return whatever makes sense</li>
-                <li>Beware: no sequence point holds, so operands may be evaluated in any order</li>
+                May return whatever makes sense</li>
+                Beware: no sequence point holds, so operands may be evaluated in any order</li>
                 </ul>
             </td>
         </tr>
@@ -655,8 +655,8 @@ C C::operator++(int)
             <td>conversion</td><td><code>C::operator X() const</code></td><td>May be member or not</td>
             <td>
                 <ul>
-                <li>Since C++ 11 may be <code>explicit</code></li>
-                <li>Return type will be <code>X</code></li>
+                Since C++ 11 may be <code>explicit</code></li>
+                Return type will be <code>X</code></li>
                 </ul>
             </td>
         </tr>
@@ -664,9 +664,9 @@ C C::operator++(int)
             <td>copy assignment</td><td><code>C &amp; operator=(const C &amp; other)</code></td><td>Must be member</td>
             <td>
                 <ul>
-                    <li>Return <code>*this</code></li>
-                    <li>Should free the resources held by <code>*this</code></li>
-                    <li>Should make a deep copy of the resources held by <code>other</code></li> 
+                    Return <code>*this</code></li>
+                    Should free the resources held by <code>*this</code></li>
+                    Should make a deep copy of the resources held by <code>other</code></li> 
                 </ul>
             </td>
         </tr>
@@ -674,10 +674,10 @@ C C::operator++(int)
             <td>move assignment</td><td><code>C &amp; operator=(const C &amp;&amp; other)</code></td><td>Must be member</td>
             <td>
                 <ul>
-                    <li>Return <code>*this</code></li>
-                    <li>Should free the resources held by <code>*this</code></li>
-                    <li>Should "steal" the resources held by <code>other</code> and pass them to <code>*this</code></li>
-                    <li>Should leave other in a "null-like" but destructible state</li>
+                    Return <code>*this</code></li>
+                    Should free the resources held by <code>*this</code></li>
+                    Should "steal" the resources held by <code>other</code> and pass them to <code>*this</code></li>
+                    Should leave other in a "null-like" but destructible state</li>
                 </ul>
             </td>
         </tr>
