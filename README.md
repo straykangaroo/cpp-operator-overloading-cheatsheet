@@ -19,7 +19,7 @@
 
 The most challenging step in using _C++ operator overloading_ (and in using C++ in general, actually) is probably moving from theory to practice. The theory in textbooks might be clear but its practical application is often arduous.
 
-C++ software developement in practice requires applying a fair deal of conventions, best practices, and professional knowledge whose content is abundant but often scantly digestible, as it is scattered in multiple textbooks, blogs, wikis, Q&A sites.
+C++ software developement in practice requires applying a fair deal of conventions, best practices, and professional knowledge whose content is abundant but often poorly digestible, as it is scattered in multiple textbooks, blogs, wikis, Q&A sites.
 
 This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many _"How could I possibly know?"_ traps.
 
