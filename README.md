@@ -1,28 +1,23 @@
-<h1>C++ Operator Overloading Cheatsheet</h1>
-<p>
-The most challenging step in using <i>C++ operator overloading</i> (and in using C++ in general, actually) is probably moving from theory to practice. The theory in textbooks might be clear but its practical application is often arduous.
-</p>
-<p>
-C++ software developement in practice requires applying a fair deal of conventions, best practices, and professional knowledge whose content is abundant but often scantly digestible, as it is scattered in multiple textbooks, blogs, wikis, Q&amp;A sites.
-</p>
-<p>
-This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many <i>"How could I possibly know?"</i> traps.
-</p>
+# C++ Operator Overloading Cheatsheet
 
-<nav>
-    <h2>Table of contents</h2>
-    <ol>
-        <li><a href="#access">Object access operators</a></li>
-        <li><a href="#arithmetic">Arithmetic operators</a></li>
-        <li><a href="#bitwise">Bitwise operators</a></li>
-        <li><a href="#boolean">Boolean (logical) operators</a></li>
-        <li><a href="#comparison">Comparison (relational) operators</a></li>
-        <li><a href="#inc_dec">Increment / Decrement operators</a></li>
-        <li><a href="#i_o">I/O streams operators</a></li>
-        <li><a href="#memory">Memory management operators</a></li>
-        <li><a href="#other">Other operators</a></li>
-    </ol>
-</nav>
+The most challenging step in using _C++ operator overloading_ (and in using C++ in general, actually) is probably moving from theory to practice. The theory in textbooks might be clear but its practical application is often arduous.
+
+C++ software developement in practice requires applying a fair deal of conventions, best practices, and professional knowledge whose content is abundant but often scantly digestible, as it is scattered in multiple textbooks, blogs, wikis, Q&A sites.
+
+This document aims at bringing together in a sensible format all the knowledge needed to quickly and effectively fielding and making the most of C++ operator overloading, steering clear, above all, of the many _"How could I possibly know?"_ traps.
+
+<h2>Table of contents</h2>
+<ol>
+    <li><a href="#access">Object access operators</a></li>
+    <li><a href="#arithmetic">Arithmetic operators</a></li>
+    <li><a href="#bitwise">Bitwise operators</a></li>
+    <li><a href="#boolean">Boolean (logical) operators</a></li>
+    <li><a href="#comparison">Comparison (relational) operators</a></li>
+    <li><a href="#inc_dec">Increment / Decrement operators</a></li>
+    <li><a href="#i_o">I/O streams operators</a></li>
+    <li><a href="#memory">Memory management operators</a></li>
+    <li><a href="#other">Other operators</a></li>
+</ol>
 
 <h2>Brief recap: what is operator overloading?</h2>
 <p>
