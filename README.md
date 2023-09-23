@@ -74,8 +74,8 @@ if( v1 != v3 ) {
         <dd>some container-like class</dd>
     <dt><code>T</code></dt>
         <dd>some type, maybe contained in a container-like <code>C</code> class</dd>
-    <td><code>I</code></dt>
-        <dd> some iterator/pointer-like class</dd>
+    <td><dt><code>I</code></dt>
+        <dd>some iterator/pointer-like class</dd>
     <dt><code>X</code>, <code>Y</code>, <code>Z</code></dt>
         <dd>some type</dd>
 </dl>
