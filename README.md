@@ -126,27 +126,26 @@ if( v1 != v3 ) {
         </tr>
         <tr>
             <td>dereference (non-const)</td>
-            <td><code>X &amp; operator*()</code></td>
+            <td><code>Y &amp; X::operator*()</code></td>
             <td>Should be member</td>
             <td>
                 <ul>
-                <li>If <code>X</code> is a built-in type, return by value</li>
                 </ul>
             </td>
         </tr>
         <tr>
             <td>dereference</td>
-            <td><code>const X &amp; operator*() const</code></td>
+            <td><code>const Y &amp; X::operator*() const</code></td>
             <td>Should be member</td>
             <td>
                 <ul>
-                <li>If <code>X</code> is a built-in type, return by value</li>
+                <li>If <code>Y</code> is a built-in type, return by value</li>
                 </ul>
             </td>
         </tr>
         <tr>
             <td>arrow (non-const)</td>
-            <td><code>X * operator-&gt;()</code></td>
+            <td><code>Y * X::operator-&gt;()</code></td>
             <td><strong>Must be member</strong></td>
             <td>
                 <ul>
@@ -156,7 +155,7 @@ if( v1 != v3 ) {
         </tr>
         <tr>
             <td>arrow (const)</td>
-            <td><code>const X * operator-&gt;() const</code></td>
+            <td><code>const Y * X::operator-&gt;() const</code></td>
             <td><strong>Must be member</strong></td>
             <td>
                 <ul>
@@ -166,8 +165,17 @@ if( v1 != v3 ) {
         </tr>
         <tr>
             <td>pointer to member</td>
-            <td><code>Y &amp; C::operator-&gt;*(X x);</code></td>
+            <td><code>Y &amp; C::operator-&gt;*(X x)</code></td>
             <td>May be member or not</td>
+            <td>
+                <ul>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <td>address-of</td>
+            <td><code>Y * X::operator&()</code></td>
+            <td>Should be member</td>
             <td>
                 <ul>
                 </ul>
@@ -744,7 +752,7 @@ X X::operator++(int)
         <tr>
             <td>function call</td>
             <td><code>Z X::operator()(Y y) const</code></td>
-            <td>Must be member</td>
+            <td><strong>Must be member</strong></td>
             <td>
                 <ul>
                 <li>May be <code>const</code>, or not</li>
@@ -778,19 +786,20 @@ X X::operator++(int)
         </tr>
         <tr>
             <td>copy assignment</td>
-            <td><code>X &amp; operator=(const X &amp; other)</code></td>
+            <td><code>X &amp; X::operator=(const X &amp; other)</code></td>
             <td><strong>Must be member</strong></td>
             <td>
                 <ul>
                     <li>Return <code>*this</code></li>
                     <li>Should free the resources held by <code>*this</code></li>
                     <li>Should make a deep copy of the resources held by <code>other</code></li> 
+                    <li>Might be <i>defaulted</i> or <i>deleted</i> (since C++11)</li> 
                 </ul>
             </td>
         </tr>
         <tr>
             <td>move assignment</td>
-            <td><code>X &amp; operator=(const X &amp;&amp; other)</code></td>
+            <td><code>X &amp; X:::operator=(const X &amp;&amp; other)</code></td>
             <td><strong>Must be member</strong></td>
             <td>
                 <ul>
@@ -798,6 +807,7 @@ X X::operator++(int)
                     <li>Should free the resources held by <code>*this</code></li>
                     <li>Should "steal" the resources held by <code>other</code> and pass them to <code>*this</code></li>
                     <li>Should leave <code>other</code> in a "null-like" but destructible state</li>
+                    <li>Might be <i>defaulted</i> or <i>deleted</i> (since C++11)</li> 
                 </ul>
             </td>
         </tr>
