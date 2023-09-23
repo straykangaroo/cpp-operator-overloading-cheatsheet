@@ -13,8 +13,7 @@
     5.  [Comparison (relational) operators](#comparison-relational-operators)
     6.  [Increment / Decrement operators](#increment--decrement-operators)
     7.  [I/O streams operators](#io-streams-operators)
-    8.  [Memory management operators](#memory-management-operators)
-    9.  [Other operators](#other-operators)
+    8.  [Other operators](#other-operators)
 5.  [Contact](#contact)
 6.  [Copyright notice](#copyright-notice)
 
@@ -742,9 +741,6 @@ X X::operator++(int)
     </tbody>
 </table>
 
-### Memory management operators
-<mark>TODO: intro</mark>
-
 ### Other operators
 <table>
     <thead><tr><th>Operator</th><th>Typical signature</th><th>Class member?</th><th>Notes</th></tr></thead>
@@ -807,7 +803,8 @@ X X::operator++(int)
                     <li>Should free the resources held by <code>*this</code></li>
                     <li>Should "steal" the resources held by <code>other</code> and pass them to <code>*this</code></li>
                     <li>Should leave <code>other</code> in a "null-like" but destructible state</li>
-                    <li>Might be <i>defaulted</i> or <i>deleted</i> (since C++11)</li> 
+                    <li>Might be <i>defaulted</i> or <i>deleted</i> (since C++11)</li>
+                    <li>Should be <code>noexcept</code></li>
                 </ul>
             </td>
         </tr>
