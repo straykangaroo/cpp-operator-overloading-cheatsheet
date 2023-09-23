@@ -793,3 +793,7 @@ C C::operator++(int)
         </tr>
     </tbody>
 </table>
+
+## Contact
+
+[https://github.com/straykangaroo/cpp-operator-overloading-cheatsheet](https://github.com/straykangaroo/cpp-operator-overloading-cheatsheet)
