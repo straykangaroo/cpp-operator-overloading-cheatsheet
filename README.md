@@ -795,7 +795,7 @@ X X::operator++(int)
         </tr>
         <tr>
             <td>move assignment</td>
-            <td><code>X &amp; X:::operator=(const X &amp;&amp; other)</code></td>
+            <td><code>X &amp; X:::operator=(X &amp;&amp; other)</code></td>
             <td><strong>Must be member</strong></td>
             <td>
                 <ul>
